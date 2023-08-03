@@ -1,7 +1,9 @@
 class User < ApplicationRecord
+    before_validation :ensure_session_token
+
     validates :username,
         presence: true,
-        length: { in: 6-30 },
+        length: { in: 6..30 },
         format: { without: URI::MailTo::EMAIL_REGEXP, message:  "can't be an email" }
 
     validates :email,
