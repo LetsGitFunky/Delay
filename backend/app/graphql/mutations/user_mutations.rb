@@ -59,4 +59,23 @@ module Mutations
             end
         end
     end
+
+    class Login < Mutations::BaseMutation
+        argument :email, String, required: true
+        argument :password, String, required: true
+
+        field :user, Types::UserType, null: false
+        field :token, String, null: false
+
+        def resolve(email:, password:)
+            user = User.find_by_credentials(email, password)
+            if user
+                token = user.reset_session_token! # Or however you want to handle tokens
+                { user: user, token: token }
+            else
+            # Handle error
+            end
+        end
+    end
+
 end
