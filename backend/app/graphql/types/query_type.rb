@@ -1,6 +1,5 @@
 module Types
   class QueryType < Types::BaseObject
-    # Add `node(id: ID!) and `nodes(ids: [ID!]!)`
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
@@ -9,8 +8,25 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :product, Types::ProductType, null: true do
+      description "Find a product by ID"
+      argument :id, ID, required: true
+    end
+
+    field :products, [Types::ProductType], null: false do
+      description "Get all products"
+    end
+
     def user(id:)
       User.find_by(id: id)
+    end
+
+    def product(id:)
+      Product.find_by(id: id)
+    end
+
+    def products
+      Product.all
     end
   end
 end
