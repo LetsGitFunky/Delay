@@ -64,16 +64,17 @@ module Mutations
         argument :email, String, required: true
         argument :password, String, required: true
 
-        field :user, Types::UserType, null: false
-        field :token, String, null: false
+        field :user, Types::UserType, null: true
+        field :token, String, null: true
+        field :errors, [String], null: false
 
         def resolve(email:, password:)
             user = User.find_by_credentials(email, password)
             if user
-                token = user.reset_session_token! # Or however you want to handle tokens
-                { user: user, token: token }
+                token = user.reset_session_token!
+                { user: user, token: token, errors: [] }
             else
-            # Handle error
+                { user: nil, token: nil, errors: ["Invalid email or password"] }
             end
         end
     end
