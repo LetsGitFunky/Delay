@@ -21,6 +21,8 @@ class User < ApplicationRecord
         presence: true,
         uniqueness: true
 
+    has_many :products, dependent: :destroy
+
     def self.find_by_credentials(email, password)
         user = User.find_by(email: email)
         user && user.authenticate(password) ? user : nil
