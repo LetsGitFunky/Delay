@@ -16,7 +16,7 @@ id: Primary Key
 user_id: Foreign Key (user who listed the product)
 name: String
 description: Text
-price: Decimal
+price: Integer
 image_url: String
 category_id: Foreign Key
 created_at: Timestamp
