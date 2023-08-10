@@ -24,4 +24,52 @@ module Mutations
             end
         end
     end
+
+    class UpdateProduct < Mutations::BaseMutation
+        argument :id, ID, required: true
+        argument :name, String, required: false
+        argument :description, String, required: false
+        argument :price, Integer, required: false
+
+        field :product, Types::ProductType, null: false
+        field :errors, [String], null: false
+
+        def resolve(id:, name: nil, description: nil, price: nil)
+            product = Product.find(id)
+            if product.update(name: name, description: description, price: price)
+                {
+                    product: product,
+                    errors: []
+                }
+            else
+                {
+                    product: nil,
+                    errors: product.errors.full_messages
+                }
+            end
+        end
+    end
+
+    class DeleteProduct < Mutations::BaseMutation
+        argument :id, ID, required: true
+
+        field :success, Boolean, null: false
+        field :errors, [String], null: false
+
+        def resolve(id:)
+            product = Product.find(id)
+            if product.destroy
+                {
+                    success: true,
+                    errors: []
+                }
+            else
+                {
+                    success: false,
+                    errors: product.errors.full_messages
+                }
+            end
+        end
+    end
+
 end
