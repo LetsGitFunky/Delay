@@ -2,7 +2,7 @@
 
 ## Database Tables:
 
-a. Users
+### Users
 id: Primary Key
 username: String
 email: String
